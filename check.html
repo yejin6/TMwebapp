@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>출석</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard Variable'; 
+        }
+        body{
+            background-color: #f2f2f2;
+            display: flex;
+        }
+        span{
+            display: flex;
+            cursor: pointer;
+        }
+        .header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+
+            margin: 68px 24px 0;
+        }
+        
+        .bottom{
+            display: flex;
+            padding: 20px 24px 40px 24px;
+            justify-content: center;
+            align-items: center;
+            gap: 68px;
+
+            border-top: 1px solid #CBCBCB;
+            background: #FFF;
+            
+            width: 100%;
+
+            position: absolute;
+            bottom: 0;
+        }
+        .bottom p{
+            color: #CBCBCB;
+            text-align: center;
+            font-family: "Pretendard Variable";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 140%; /* 16.8px */
+            letter-spacing: -0.3px;
+        }
+        .bottom div{
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .home p{
+            color: #435FD0;
+            text-align: center;
+            font-family: "Pretendard Variable";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 140%; /* 16.8px */
+            letter-spacing: -0.3px;
+        }
+
+        .attendance{
+            width: 402px;
+            height: 874px;
+
+            position: relative;
+
+            background-color: #fff;
+        }
+
+        .attendance-con{
+            /* background-color: #435FD0; */
+            
+            width: 100%;
+            height: calc(100% - 108px);
+            padding: 28px 24px 0px 24px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .conA{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+        }
+        .conA h1{
+            color: #191F28;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 140%;
+            letter-spacing: -0.5px;
+            padding: 0 4px;
+        }
+        .contents-box{
+            width: 100%;
+            display: flex;
+            
+            padding: 20px 0px;
+            justify-content: space-between;
+            align-items: center;
+            align-self: stretch;
+
+            border-radius: 10px;
+            background: #F6F7FB;
+        }
+        .att, .perception, .absence{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .att, .perception{
+            border-right: 1px solid #E3E3E3;
+        }
+        .count{
+            color: #3E414F;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .type{
+            color: #727581;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        .conB{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+        }
+            .conB h2{
+                color: #191F28;
+                font-size: 18px;
+                font-weight: 500;
+            }
+            .conB-title{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+            .week{
+                display: flex;
+                padding: 8px 10px;
+                align-items: center;
+                gap: 10px;
+            }
+            .table{
+                width: 100%;
+                display: flex;  
+
+                padding: 10px 0px;
+                flex-direction: column;
+                align-items: flex-start;
+                align-self: stretch;
+            }
+            .table-title{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+
+                    border-bottom: 1px solid #E3E3E3;
+                    padding: 6px 0px;
+                }
+                .table-title p{
+                    width: 100%;
+
+                    color: #414141;
+                    text-align: center;
+                    font-size: 14px;
+                    font-weight: 600;
+                }
+
+                .table-list{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    align-self: stretch;
+                }
+                .table-item{
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 16px 0;
+                }
+                .table-item:not(:last-child){
+                    border-bottom: 1px solid #E3E3E3;
+                }
+                .table-item > *{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                }
+                .table-item p{
+                    color: #414141;
+                    text-align: center;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+                .table-item > .attendance-type{
+                    gap: 4px;
+                }
+                .table-item > .attendance-type p{
+                    color: #06DC83;
+                    text-align: center;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+                p.appeal{
+                    color: #414141;
+                    text-align: center;
+                    font-size: 14px;
+                    font-weight: 600;
+
+                    cursor: pointer;
+                }
+    </style>
+</head>
+<body>
+    <div class="attendance">
+        <div class="header">
+            <div class="logo"><img src="img/LOGO.svg" alt=""></div>
+            <span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M12 21C14.2091 21 16 19.2091 16 17H8C8 19.2091 9.79086 21 12 21Z" stroke="#2B2B2B" stroke-width="2"/>
+                <path d="M17.9998 8C17.9998 6.4087 17.3676 4.88258 16.2424 3.75736C15.1172 2.63214 13.5911 2 11.9998 2C10.4085 2 8.88235 2.63214 7.75713 3.75736C6.63192 4.88258 5.99977 6.4087 5.99977 8C5.99977 11.0902 5.22024 13.206 4.34944 14.6054C3.6149 15.7859 3.24763 16.3761 3.2611 16.5408C3.27601 16.7231 3.31463 16.7926 3.46155 16.9016C3.59423 17 4.19237 17 5.38863 17H18.6109C19.8072 17 20.4053 17 20.538 16.9016C20.6849 16.7926 20.7235 16.7231 20.7384 16.5408C20.7519 16.3761 20.3846 15.7859 19.6501 14.6054C18.7793 13.206 17.9998 11.0902 17.9998 8Z" stroke="#2B2B2B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="17" cy="5" r="4" fill="#435FD0"/>
+              </svg></span>
+        </div>
+
+        <!-- 안에 내용 -->
+        <div class="attendance-con">
+            <div class="conA">
+                <h1>전체 출결</h1>
+                <div class="contents-box">
+                    <div class="att">
+                        <div class="count">81</div>
+                        <p class="type">출석</p>
+                    </div>
+                    <div class="perception">
+                        <div class="count">81</div>
+                        <p class="type">지각</p>
+                    </div>
+                    <div class="absence">
+                        <div class="count">81</div>
+                        <p class="type">결석</p>
+                    </div>
+                </div>
+            </div>
+            <div class="conB">
+                <div class="conB-title">
+                    <h2>주차별 출결 조회</h2>
+                    <div class="week">
+                        <p>12월 1주차</p>
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                                <path d="M4 6.5L8 10.5L12 6.5" stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                              </svg>
+                        </span>
+                    </div>
+                </div>
+                <div class="table">
+                    <div class="table-title">
+                        <p>일자</p>
+                        <p>시간</p>
+                        <p>출결</p>
+                        <p>이의신청</p>
+                    </div>
+
+                    <div class="table-list">
+                        <div class="table-item">
+                            <p>12월 02일</p>
+                            <p>09:04:51</p>
+                            <div class="attendance-type">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                    <circle cx="12.5234" cy="12" r="10" stroke="#06DC83" stroke-width="2"/>
+                                    <path d="M8.55371 11.3839L11.4313 14.8855L16.4648 8.76025" stroke="#06DC83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                  <p>출석</p>
+                            </div>
+                            <p class="appeal">이의신청</p>
+                        </div>
+                        <div class="table-item">
+                            <p>12월 02일</p>
+                            <p>09:04:51</p>
+                            <div class="attendance-type">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                    <circle cx="12.5234" cy="12" r="10" stroke="#06DC83" stroke-width="2"/>
+                                    <path d="M8.55371 11.3839L11.4313 14.8855L16.4648 8.76025" stroke="#06DC83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                  <p>출석</p>
+                            </div>
+                            <p>-</p>
+                        </div>
+                        <div class="table-item">
+                            <p>12월 02일</p>
+                            <p>09:04:51</p>
+                            <div class="attendance-type">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                    <circle cx="12.5234" cy="12" r="10" stroke="#06DC83" stroke-width="2"/>
+                                    <path d="M8.55371 11.3839L11.4313 14.8855L16.4648 8.76025" stroke="#06DC83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                  </svg>
+                                  <p>출석</p>
+                            </div>
+                            <p>-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="bottom">
+            <div class="home">
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                    <path d="M13.4589 2.764C13.1075 2.49075 12.9319 2.35412 12.7379 2.3016C12.5668 2.25526 12.3864 2.25526 12.2152 2.3016C12.0212 2.35412 11.8456 2.49075 11.4943 2.764L4.71195 8.03912C4.25858 8.39175 4.0319 8.56806 3.86859 8.78886C3.72393 8.98444 3.61616 9.20478 3.55059 9.43905C3.47656 9.70352 3.47656 9.9907 3.47656 10.5651V17.8C3.47656 18.9201 3.47656 19.4801 3.69455 19.908C3.8863 20.2843 4.19226 20.5903 4.56858 20.782C4.9964 21 5.55646 21 6.67656 21H8.67656C8.95659 21 9.0966 21 9.20356 20.9455C9.29764 20.8976 9.37413 20.8211 9.42207 20.727C9.47656 20.62 9.47656 20.48 9.47656 20.2V13.6C9.47656 13.0399 9.47656 12.7599 9.58556 12.546C9.68143 12.3578 9.83441 12.2049 10.0226 12.109C10.2365 12 10.5165 12 11.0766 12H13.8766C14.4366 12 14.7166 12 14.9306 12.109C15.1187 12.2049 15.2717 12.3578 15.3676 12.546C15.4766 12.7599 15.4766 13.0399 15.4766 13.6V20.2C15.4766 20.48 15.4766 20.62 15.5311 20.727C15.579 20.8211 15.6555 20.8976 15.7496 20.9455C15.8565 21 15.9965 21 16.2766 21H18.2766C19.3967 21 19.9567 21 20.3845 20.782C20.7609 20.5903 21.0668 20.2843 21.2586 19.908C21.4766 19.4801 21.4766 18.9201 21.4766 17.8V10.5651C21.4766 9.9907 21.4766 9.70352 21.4025 9.43905C21.337 9.20478 21.2292 8.98444 21.0845 8.78886C20.9212 8.56806 20.6945 8.39175 20.2412 8.03913L13.4589 2.764Z" fill="#435FD0" stroke="#435FD0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg></span>
+                  <p>홈</p>
+            </div>
+            <div class="ochul">
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                    <path d="M12.4766 6V12L16.4766 14M22.4766 12C22.4766 17.5228 17.9994 22 12.4766 22C6.95371 22 2.47656 17.5228 2.47656 12C2.47656 6.47715 6.95371 2 12.4766 2C17.9994 2 22.4766 6.47715 22.4766 12Z" stroke="#CBCBCB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M12.4766 6V12L16.4766 14" stroke="#CBCBCB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg></span>
+                  <p>출석</p>
+            </div>
+            <div class="point">
+                <span><svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                    <rect width="24" height="24" transform="translate(0.976562)" fill="white"/>
+                    <path d="M7.45156 14.0433C7.46537 14.0194 7.49595 14.0112 7.51986 14.025L11.7634 16.475C11.7873 16.4888 11.7955 16.5194 11.7817 16.5433L8.36244 22.4656C8.34086 22.503 8.28523 22.4973 8.27167 22.4563L7.26925 19.4256C7.26128 19.4015 7.2365 19.3872 7.21164 19.3923L4.08576 20.0396C4.04348 20.0483 4.01073 20.003 4.03232 19.9656L7.45156 14.0433Z" stroke="#CBCBCB" stroke-width="2"/>
+                    <path d="M14.3316 16.5433C14.3178 16.5194 14.326 16.4888 14.3499 16.475L18.5935 14.025C18.6174 14.0112 18.648 14.0194 18.6618 14.0433L22.081 19.9656C22.1026 20.003 22.0698 20.0483 22.0276 20.0396L18.9017 19.3923C18.8768 19.3872 18.8521 19.4015 18.8441 19.4256L17.8417 22.4563C17.8281 22.4973 17.7725 22.503 17.7509 22.4656L14.3316 16.5433Z" stroke="#CBCBCB" stroke-width="2"/>
+                    <circle cx="13.4766" cy="9.5" r="7.5" fill="white" stroke="#CBCBCB" stroke-width="2"/>
+                    <circle cx="13.4766" cy="9.5" r="3.5" stroke="#CBCBCB" stroke-width="2"/>
+                  </svg></span>
+                  <p>상벌점</p>
+            </div>
+            <div class="my">
+                <span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                        <path d="M12.4766 15C9.30649 15 6.48736 16.5306 4.69256 18.906C4.30627 19.4172 4.11313 19.6728 4.11944 20.0183C4.12432 20.2852 4.29193 20.6219 4.50193 20.7867C4.77375 21 5.15043 21 5.9038 21H19.0493C19.8027 21 20.1794 21 20.4512 20.7867C20.6612 20.6219 20.8288 20.2852 20.8337 20.0183C20.84 19.6728 20.6469 19.4172 20.2606 18.906C18.4658 16.5306 15.6466 15 12.4766 15Z" stroke="#CBCBCB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M12.4766 12C14.9618 12 16.9766 9.98528 16.9766 7.5C16.9766 5.01472 14.9618 3 12.4766 3C9.99128 3 7.97657 5.01472 7.97657 7.5C7.97657 9.98528 9.99128 12 12.4766 12Z" stroke="#CBCBCB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                      </svg>
+                </span>
+                <p>MY</p>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>
+    
+</script>
+</html>

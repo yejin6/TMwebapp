@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            list-style: none;
+        }
+        .red {
+            background: linear-gradient(171deg, #FFF 1.79%, #EEF4FF 98.21%);
+            position: absolute;
+            z-index: 2;
+            padding: 24px;
+            width: 402px;
+            height: 874px;
+        }
+        .blue {
+            background-color: #ffffff;
+            padding: 24px;
+            position: absolute;
+            z-index: 0;
+            width: 402px;
+            height: 874px;
+        }
+        .green {
+            background-color: #ffffff;
+            padding: 24px;
+            position: absolute;
+            z-index: 1;
+            width: 402px;
+            height: 874px;
+        }
+        .orange {
+            background-color: #fafafa;
+            padding: 24px 0px;
+            position: absolute;
+            z-index: -1;
+            width: 402px;
+            height: 874px;
+        }
+        #Container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 200px;
+            height: 100vh;
+        }
+        #Kiosk {
+            width: 402px;
+            height: 874px;
+            border: 1px solid black;
+        }
+        #result {
+        margin-top: 20px;
+        text-align: center;
+        }
+        #result img {
+        border: 2px solid #ccc;
+        max-width: 300px;
+        margin-top: 10px;
+      }
+      #localtime {
+        display: flex;
+        align-items: center; /* 수직 정렬 */
+        justify-content: flex-start; /* 왼쪽 정렬 */
+        width: 100%; /* 부모 요소의 전체 너비 사용 */
+      }
+      .topbar{
+        display: flex;
+        padding:20px;
+        align-items: center; /* 수직 정렬 */
+        justify-content: flex-start; /* 왼쪽 정렬 */
+        width: 90%; /* 부모 요소의 전체 너비 사용 */
+        min-height: 147px;
+        justify-content: center; /* 수평 중앙 정렬 */
+        flex-direction: column; /* 내용이 위아래로 정렬되도록 설정 */
+      }
+
+      #localtime > div {
+        margin-right: 5px; /* 요소 간 간격 */
+      }
+      #hours {
+        font-size: 36px;
+        font-weight: bold;
+        font-family: 'Pretendard Variable';
+      }
+      #time {
+        color: #b5c6e9;
+        font-size: 24px;
+        font-weight: 600;
+        font-family: 'Pretendard Variable';
+      }
+      #today {
+        justify-content: start;
+        width: 100%;
+        font-size: 14px;
+        font-family: 'Pretendard Variable';
+      }
+      #bottom-container{
+        margin: 0 auto;
+        border:1px solid transparent;
+        background-image: linear-gradient(-65deg, rgb(212, 222, 255, .2), rgb(186, 209, 255, .2)), linear-gradient(-69deg, #EDF1FE, #DBE2FF);
+        border-radius: 10px;
+        width:354px;
+        height:122px;
+        text-align: center;
+        min-height: 122px;
+        display: flex;
+        justify-content: center; /* 수평 중앙 정렬 */
+        align-items: center; /* 수직 중앙 정렬 */
+        flex-direction: column; /* 내용이 위아래로 정렬되도록 설정 */
+      }
+      #maintext{
+        color:#435FD0;
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom:4px;
+        font-family: 'Pretendard Variable';
+      }
+      #subtext{
+        color:#2F2F2F;
+        font-size:18px;
+        font-family: 'Pretendard Variable';
+      }
+
+/* 여기서부터 app */
+        #Iphone {
+            width: 402px;
+            height: 874px;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 40px;
+        }
+        .bottom {
+            display: flex;
+            padding: 20px 24px 40px 24px;
+            justify-content: center;
+            align-items: center;
+            gap: 68px;
+            border-top: 1px solid #CBCBCB;
+            background: #FFF;
+            position: fixed;
+            bottom: 0;
+            width: 402px;
+            transform: translateX(-24px);
+        }
+        .bottom p {
+            color: #CBCBCB;
+            text-align: center;
+            font-family: "Pretendard Variable";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 140%; /* 16.8px */
+            letter-spacing: -0.3px;
+        }
+        .bottom div {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .home p {
+            color: #435FD0;
+            text-align: center;
+            font-family: "Pretendard Variable";
+            font-size: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 140%; /* 16.8px */
+            letter-spacing: -0.3px;
+        }
+        .bottom span{
+            text-align: center;
+        }
+        .home, .ochul, .point, .my{
+            cursor: pointer;
+
+        }
+
+        /* 이의신청 */
+        span{
+            display: flex;
+            cursor: pointer;
+        }
+
+        .appeal-container{
+            width: 402px;
+            height: 874px;
+
+            position: relative;
+
+            background-color: #fff;
+        }
+
+        .appeal-header{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 52px;
+            padding: 0 24px;
+        }
+        .appeal-header p{
+            color: #232C39;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 140%;
+            letter-spacing: -0.45px;
+        }
+        .option{
+            display: flex;
+            flex-direction: column;
+            padding: 20px 24px;
+            gap: 40px;
+        }
+        .option > .date, .option > .img, .option > .contents{
+            display: flex;
+            gap: 10px;
+            flex-direction: column;
+        }
+        .label{
+            color: #414141;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 120%;
+            margin: 0 4px;
+        }
+        .date-con{
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #E0E0E0;
+
+            position: relative;
+        }
+        .date-label{
+            color: #747480;
+            font-size: 14px;
+            font-weight: 400;
+
+            display: flex;
+            align-items: center;
+        }
+        .img > .img-con{
+            background-color: #e6e7e8;
+            width: 100%;
+            height: 355px;
+            border-radius: 8px;
+        }
+        .contents input{
+            display: flex;
+            
+            padding: 20px 16px;
+            border-radius: 8px;
+            border: none;
+            background-color: #F6F6FB;    
+        }
+        .contents input:focus{
+            background-color: #ececf0;  
+            outline: none !important;
+        }
+
+        button{
+            position: fixed;
+            bottom: 60px;
+            margin: 0 24px;
+
+            display: flex;
+            width: 354px;
+            padding: 20px 0px;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 10px;
+            background: #435FD0;
+            border: none;
+
+            color: #FFF;
+            font-size: 18px;
+            font-weight: 500;
+            line-height: 120%;
+
+            cursor: pointer;
+        }
+        #submit{
+            display:none;
+        }
+
+        /* 달력 */
+
+        .calendar{
+            display: none;
+            align-items: flex-start;
+
+            width: 250px;
+            padding: 16px 18px;
+            flex-direction: column;
+            gap: 10px;
+
+            border-radius: 10px;
+            background: #FFF;
+            box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.12);
+
+            position: absolute;
+            
+            top: 174px;
+            right: 24px;
+            z-index: 10;
+        }
+            .month{
+                color: #373737;
+                font-size: 18px;
+                font-weight: 600;
+                padding: 0 2px;
+                margin-bottom: 12px;
+                text-align: center;
+                width: 100%;
+            }
+            .calendar-week{
+                display: flex;
+                justify-content: space-between;
+                width: 100%;
+                margin-bottom: 12px;
+            }
+            .calendar-week li{
+                width: 20px;
+                height: 20px;
+                text-align: center;
+
+                color: #848484;
+                text-align: center;
+                font-size: 14px;
+                font-weight: 400;
+            }
+            .calendar-date{
+                display: flex;
+                flex-direction: column;
+
+                justify-content: space-between;
+                width: 100%;
+
+                gap: 12px;
+            }
+            .calendar-date li{
+                display: flex;
+                justify-content: space-between;
+
+                
+            }
+            .calendar-date li p{
+                color: #222;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 14px;
+                font-weight: 400;
+
+                width: 24px;
+                height: 24px;
+                border-radius: 100px;
+
+                /* background-color: #435FD0; */
+            }
+            .calendar-date li p:nth-of-type(1),
+            .calendar-date li p:nth-of-type(7){
+                color: #E93F3F;
+            }
+
+
+        /* 홈 */
+
+   
+        .main{
+            display: flex;
+        }
+        .text{
+            display: flex;
+            flex-direction: column;
+            padding: 20px 4px;
+        }
+        .text p:nth-child(2){
+            color: #3C3C3C;
+            font-size: 26px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+            letter-spacing: -0.65px;
+        }
+        .text p:nth-child(3){
+            color: #3C3C3C;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+        .award{
+            border-radius: 10px;
+            border: 1px solid #E9EDFF;
+            background: linear-gradient(97deg, rgba(255, 255, 255, 0.82) 0%, #F4F6FF 100%);
+            box-shadow: 0px 0px 20px 0px rgba(130, 137, 254, 0.25);
+            backdrop-filter: blur(20px);
+
+            display: flex;
+            padding: 20px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 30px;
+            align-self: stretch;
+
+            margin-bottom: 20px;
+        }
+        .percent{
+            display: flex;
+            width: 100%;
+            gap: 10px;
+            margin-bottom: 32px;
+        }
+        .ab, .uniform{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 10px;
+            border: 1px solid rgba(186, 209, 255, 0.20);
+            background: linear-gradient(0deg, #FFF 0%, #FFF 100%), linear-gradient(171deg, rgba(255, 255, 255, 0.80) 1.79%, rgba(255, 255, 255, 0.40) 98.21%);
+            box-shadow: 0px 0px 20px 0px rgba(130, 137, 254, 0.25);
+            backdrop-filter: blur(2px);
+
+            padding: 20px;
+        }
+        .ab p:nth-child(1), .uniform p:nth-child(1){
+            color: #435FD0;
+            text-align: center;
+            font-family: "Pretendard Variable";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: normal;
+            margin-bottom: 4px;
+        }
+        .ab p:nth-child(2), .uniform p:nth-child(2){
+            color: #8F9197;
+            text-align: center;
+            font-family: "Pretendard Variable";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+        }
+        .notice{
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .title{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+        .entire{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .entire span{
+            display: flex;
+        }
+        .title p{
+            color: #191F28;
+            font-family: "Pretendard Variable";
+            font-size: 20px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 140%; /* 28px */
+            letter-spacing: -0.5px;
+        }
+        .entire p{
+            color: #656565;
+            font-family: "Pretendard Variable";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 140%; /* 19.6px */
+            letter-spacing: -0.35px;
+        }
+        .notice-list{
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .notice-item{
+            display: flex;
+            padding: 20px;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 12px;
+            align-self: stretch;
+            border-radius: 10px;
+            background: #FFF;
+        }
+        .notice-item p:nth-child(1){
+            color: #232C39;
+            font-family: "Pretendard Variable";
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+        .notice-item p:nth-child(2){
+            color: rgba(0, 0, 0, 0.50);
+            font-family: "Pretendard Variable";
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+
+        /* 출석 */
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Pretendard Variable'; 
+        }
+
+
+        .attendance{
+            position: relative;
+            background-color: #fff;
+        }
+
+        .attendance-con{
+            
+            width: 100%;
+            height: calc(100% - 108px);
+            padding: 28px 0px 0px 0px;
+
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .conA{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+        }
+        .conA h1{
+            color: #191F28;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 140%;
+            letter-spacing: -0.5px;
+            padding: 0 4px;
+        }
+        .contents-box{
+            width: 100%;
+            display: flex;
+            
+            padding: 20px 0px;
+            justify-content: space-between;
+            align-items: center;
+            align-self: stretch;
+
+            border-radius: 10px;
+            background: #F6F7FB;
+        }
+        .contents-box2{
+            width: 100%;
+            display: flex;
+            padding: 24px 0px;
+            justify-content: space-between;
+            align-items: center;
+            align-self: stretch;
+            border-radius: 10px;
+            background: #F6F7FB;
+        }
+
+        .att, .perception, .absence{
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        .att, .perception{
+            border-right: 1px solid #E3E3E3;
+        }
+        .count{
+            color: #3E414F;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+        }
+        .type{
+            color: #727581;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 400;
+        }
+        .conB{
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 10px;
+        }
+            .conB h2{
+                color: #191F28;
+                font-size: 18px;
+                font-weight: 500;
+            }
+            .conB-title{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                width: 100%;
+            }
+            .week{
+                display: flex;
+                padding: 8px 10px;
+                align-items: center;
+                gap: 10px;
+            }
+            .table{
+                width: 100%;
+                display: flex;  
+
+                padding: 10px 0px;
+                flex-direction: column;
+                align-items: flex-start;
+                align-self: stretch;
+            }
+            .table-title{
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
+
+                    border-bottom: 1px solid #E3E3E3;
+                    padding: 6px 0px;
+                }
+                .table-title p{
+                    width: 100%;
+
+                    color: #414141;
+                    text-align: center;
+                    font-size: 14px;
+                    font-weight: 600;
+                }
+
+                .table-list{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    align-self: stretch;
+                }
+                .table-item{
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 16px 0;
+                }
+                .table-item:not(:last-child){
+                    border-bottom: 1px solid #E3E3E3;
+                }
+                #today-attendance-check{
+                    border-bottom: 1px solid #E3E3E3;
+                }
+                
+                .table-item > *{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+                .table-item p{
+                    color: #414141;
+                    text-align: center;
+                    font-size: 14px;
+                    font-weight: 400;
+                }
+                .table-item > .attendance-type{
+                    gap: 4px;
+                    align-items: center;
+                }
+                .table-item > .attendance-type p{
+                    color: #06DC83;
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+                p.appeal{
+                    color: #414141;
+                    text-align: center;
+                    font-size: 14px;
+                    font-weight: 400;
+
+                    cursor: pointer;
+                }
+              
+                .conC{
+                    background-color: #E5E9F9;
+                    text-align: center;
+                    padding:16px 0px;
+                    width: 100%;
+                    gap: 10px;
+                    border-radius: 4px;
+                    cursor: pointer;
+
+                }
+                .conC p{
+                    font-family: 'Pretendard Variable';
+                    font-style: normal;
+                    font-weight: 700;
+                    font-size: 16px;
+                    line-height: 120%;
+                    letter-spacing: -0.5px;
+                    color: #435FD0;
+
+                }
+
+                .table2{
+                width: 100%;
+                display: flex;  
+
+                padding: 10px 0px;
+                flex-direction: column;
+                align-items: flex-start;
+                align-self: stretch;
+                 }
+            
+                .table-list2{
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    align-self: stretch;
+                }
+                .table-item2{
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 16px 8px;
+                }
+                .table-item2:not(:last-child){
+                    border-bottom: 1px solid #E3E3E3;
+                }
+                .table-item2 > *{
+                    width: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                }
+ 
+                .table-item2 > .attendance-type2{
+                    gap: 4px;
+                }
+
+                p.appeal2{
+                    color: #414141;
+                    text-align: right;
+                    font-size: 20px;
+                    font-weight: 600;
+                }
+
+                .point-good{
+                    font-size: 18px;
+                    font-weight: 600;
+                    color: #414141;
+                }
+
+                .point-date{
+                    font-size: 14px;
+                    font-weight: 400;
+                    color: #ADADAD;
+                }
+
+                
+                .attendance-con2{
+                    
+                    width: 100%;
+                    height: calc(100% - 108px);
+                    padding: 28px 0px 0px 0px;
+
+                    display: flex;
+                    flex-direction: column;
+                    gap: 24px;
+                }
+                        
+                .datebar{
+                    /* Rectangle 3600 */
+
+                    width: 314px;
+                    height: 10px;
+
+                    background: #60667F;
+                    border-radius: 100px;
+
+                    /* Inside auto layout */
+                    flex: none;
+                    order: 0;
+                    align-self: stretch;
+                    flex-grow: 0;
+                    z-index: 0;
+
+                }
+                .currentbar{
+                    /* Rectangle 3601 */
+
+                    position: absolute;
+                    width: 263px;
+                    height: 10px;
+
+                    background: linear-gradient(90deg, #8C68FF 0%, #7BA3FF 100%);
+                    border-radius: 100px;
+
+                    /* Inside auto layout */
+                    flex: none;
+                    order: 1;
+                    flex-grow: 0;
+                    z-index: 1;
+                }
+                .rewards{
+                    display:flex;
+                    justify-content: right;
+                    gap: 85px;
+                }
+
+                .character {
+                    width: auto;
+                    height: 200px;
+                    display: flex; /* flexbox 사용 */
+                    flex-direction: column; /* 세로로 배치 */
+                    justify-content: center; /* 수직 중앙 정렬 */
+                    align-items: center; /* 수평 중앙 정렬 */
+                }
+                #hand1{
+                    z-index: 1;
+                    animation: moveUpDownHand 2s ease-in-out infinite; /* 애니메이션을 1초 주기로 부드럽게 반복 */
+                }
+                #body1{
+                    z-index: -2;
+                    animation: moveUpDownBody 2s ease-in-out infinite; /* 애니메이션을 1초 주기로 부드럽게 반복 */
+
+                }
+             
+                #head1{
+                    z-index: -1;
+                    animation: moveUpDownHead 2s ease-in-out infinite; /* 애니메이션을 1초 주기로 부드럽게 반복 */
+
+                }
+
+                #hand2{
+                    display: none;
+                    z-index: -3;
+                    animation: moveUpDownHand2 2s ease-in-out infinite; /* 애니메이션을 1초 주기로 부드럽게 반복 */
+                }
+                #body2{
+                    display: none;
+                    z-index: -2;
+                    transform:translateY(100px);
+                    animation: moveUpDownBody2 2s ease-in-out infinite; /* 애니메이션을 1초 주기로 부드럽게 반복 */
+
+                }
+             
+                #head2{
+                    display: none;
+                    z-index: -1;
+                    animation: moveUpDownHead2 2s ease-in-out infinite; /* 애니메이션을 1초 주기로 부드럽게 반복 */
+
+                }
+                #effect2{
+                    display: none;
+                    z-index: 3;
+                    animation: moveUpDowneffect2 2s ease-in-out infinite; /* 애니메이션을 1초 주기로 부드럽게 반복 */
+                }
+
+
+/* 애니메이션1 */
+
+                @keyframes moveUpDownHead {
+                    0% {
+                        transform: translateY(40px); /* 처음 위치 */
+                    }
+                    50% {
+                        transform: translateY(35px); /* 위로 3px 이동 */
+                    }
+                    100% {
+                        transform: translateY(40px); /* 다시 원래 위치 */
+                    }
+
+                }  
+                 @keyframes moveUpDownHand {
+                    0% {
+                        transform: translateY(-60px); /* 처음 위치 */
+                    }
+                    50% {
+                        transform: translateY(-50px); /* 위로 3px 이동 */
+                    }
+                    100% {
+                        transform: translateY(-60px); /* 다시 원래 위치 */
+                    }
+                }
+                @keyframes moveUpDownBody {
+                    0% {
+                        transform: translateY(15px); /* 처음 위치 */
+                    }
+                    50% {
+                        transform: translateY(7px); /* 위로 3px 이동 */
+                    }
+                    100% {
+                        transform: translateY(15px); /* 다시 원래 위치 */
+                    }
+                }
+
+/* 애니메이션2 */
+                @keyframes moveUpDownHead2 {
+                    0% {
+                        transform: translateY(170px); /* 처음 위치 */
+                    }
+                    40% {
+                        transform: translateY(180px); /* 위로 3px 이동 */
+                    }
+                    70% {
+                        transform: translateY(180px); /* 위로 3px 이동 */
+                    }
+                    100% {
+                        transform: translateY(170px); /* 다시 원래 위치 */
+                    }
+
+                }  
+                 @keyframes moveUpDownHand2 {
+                    0% {
+                        transform: translateY(-110px); /* 처음 위치 */
+                        opacity: 0;
+                    }
+                    60% {
+                        transform: translateY(-100px); /* 위로 3px 이동 */
+                        opacity: 1;
+
+                    }
+                    75% {
+                        transform: translateY(-100px); /* 다시 원래 위치 */
+                        opacity: 1;
+
+                    }
+                    100% {
+                        transform: translateY(-110px); /* 다시 원래 위치 */
+                        opacity: 0;
+
+                    }
+                }
+                @keyframes moveUpDownBody2 {
+                    0% {
+                        transform: translateY(140px); /* 처음 위치 */
+                    }
+                    40% {
+                        transform: translateY(130px); /* 위로 3px 이동 */
+                    }
+                    70% {
+                        transform: translateY(130px); /* 위로 3px 이동 */
+                    }
+                    100% {
+                        transform: translateY(140px); /* 다시 원래 위치 */
+                    }
+                }
+                @keyframes moveUpDowneffect2 {
+                    0% {
+                        transform: translateY(-165px); /* 처음 위치 */
+                        opacity: 0;
+                    }
+                    30% {
+                        opacity: 1;
+                    }
+                    70% {
+                        transform: translateY(-140px); /* 다시 원래 위치 */
+                        opacity: 0;
+                    }
+
+                    100% {
+                        transform: translateY(-140px); /* 다시 원래 위치 */
+                        opacity: 0;
+                    }
+                }
+
+
+    </style>
+</head>
+<body onload="init()">
+<div id="Container">
+    <div id="Kiosk">
+        <div class="topbar">
+            <div style="display: flex; width:100%;">
+                <div id="localtime">
+                    <div id="hours">hours</div>
+                    <div id="time">time</div>
+                </div>
+                <img style="margin-top:28px" src="img\LOGO.svg">
+            </div>
+            <div id="today"></div>
+        </div>
+        <script>
+            let today = new Date();
+            console.log("today: ", today)
+            let hours = ("0" + today.getHours()).slice(-2);
+            let minutes = ("0" + today.getMinutes()).slice(-2);
+            let seconds = ("0" + today.getSeconds()).slice(-2);
+            let time;
+            if (hours > 12) {
+                kiosk_hours = hours - 12;
+                time = " Pm";
+            } else {
+                time = " Am";
+            }
+
+            let year = today.getFullYear();
+            let month = today.getMonth() + 1;
+            let day = today.getDate();
+            $("#hours").text(kiosk_hours + ":" + minutes);
+            $("#time").text(time);
+
+            function getDayOfWeek(yyyyMMdd) {
+                const week = ["일", "월", "화", "수", "목", "금", "토"];
+                const dayOfWeek = new Date(yyyyMMdd).getDay();
+                //0:일, 1:월, 2:화, 3:수, 4:목, 5:금, 6:토
+                return week[dayOfWeek];
+            }
+            let nowtime = hours +":"+ minutes +":"+ seconds //현재시간(출석시 데이터 넘기기 하나로 묶음)
+            let nowday_noyear = month+"월 "+day+"일" //현재날짜(출석에 사용)
+            let nowday = year+ "." + month + "." + day //현재날짜(상벌점에 사용)
+    
+            $("#today").text(year + "년 " + month + "월  " + day + "일 " + "(" + (getDayOfWeek(year + month + day) + ")"));
+    
+        </script>
+        <div id="webcam-container" style="position: relative;">
+            <img id="overlayImage">
+        </div>
+        <div style="min-height: 20px;">
+        </div>
+        <div id="bottom-container">
+            <div id="maintext">가이드라인에 맞춰 서주세요.</div>
+            <div id="subtext">화면 속 가이드라인에 맞춰 서주세요!</div>
+        </div>
+        <div id="label-container"></div>
+        <div id="predict"></div>
+        <div id="result"></div>
+    </div>
+    <div id="Iphone">
+        <div class="red">
+            <div class="header-container"></div>
+            <div class="bottom-container"></div>
+                <div class="main">
+                    <div class="text">
+                        <div class="grade">3학년 2학기</div>
+                        <p style="font-size:24px;">안녕하세요, <b>예진님!</b></p>
+                        <p>등교 142일 째!</p>
+                    </div>
+                    <div class="character">
+                            <img src="img/head1.svg" id="head1" alt="">
+                            <img src="img/body1.svg" id="body1" alt="">
+                            <img src="img/hand1.svg" id="hand1" alt="">
+
+                            <img src="img/head2.svg" id="head2" alt="">
+                            <img src="img/body2.svg" id="body2" alt="">
+                            <img src="img/hand2.svg" id="hand2" alt="">
+                            <img src="img/effect2.svg" id="effect2" alt="">
+                    </div>
+                </div>
+    
+                <div class="award">
+                    <p>개근상까지 앞으로 21일 남았어요!</p>
+                    <div class="rewardbar">
+                        <div class="rewards">
+                            <img src="img/rewardicon.svg">    
+                            <img src="img/rewardicon.svg">    
+                            <img src="img/rewardiconDefault.svg">    
+                        </div>
+                        <div class="datebar">
+                            <div class="currentbar"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="percent">
+                    <div class="ab">
+                        <p>출석율</p>
+                        <p>3학년 2학기</p>
+                    </div>
+                    <div class="uniform">
+                        <p>복장단정율</p>
+                        <p>12월 3주차</p>  
+                    </div>
+                </div>
+                <div class="notice">
+                    <div class="title">
+                        <p>공지사항</p>
+                        <div class="entire">
+                            <p>전체보기</p>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M7.5 15L12.5 10L7.5 5" stroke="#656565" stroke-width="1.66667" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="notice-list">
+                        <div class="notice-item">
+                            <p>2025학년도 학년별 교과서 및 목록</p>
+                            <p>2024.12.11</p>
+                        </div>
+                        <div class="notice-item">
+                            <p>2025학년도 학년별 교과서 및 목록</p>
+                            <p>2024.12.11</p>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+        <div class="blue">
+            <div class="header-container"></div>
+            <!-- 내용 -->
+            <div class="attendance">
+                <!-- 안에 내용 -->
+                <div class="attendance-con">
+                    <div class="conA">
+                        <h1>전체 출결</h1>
+                        <div class="contents-box">
+                            <div class="att">
+                                <div class="count">81</div>
+                                <p class="type">출석</p>
+                            </div>
+                            <div class="perception">
+                                <div class="count">81</div>
+                                <p class="type">지각</p>
+                            </div>
+                            <div class="absence">
+                                <div class="count">81</div>
+                                <p class="type">결석</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="conB">
+                        <div class="conB-title">
+                            <h2>주차별 출결 조회</h2>
+                            <div class="week">
+                                <p>12월 1주차</p>
+                                <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="17" viewBox="0 0 16 17" fill="none">
+                                        <path d="M4 6.5L8 10.5L12 6.5" stroke="black" stroke-width="1.33333" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="table">
+                            <div class="table-title">
+                                <p>일자</p>
+                                <p>시간</p>
+                                <p>출결</p>
+                                <p>이의신청</p>
+                            </div>
+                            <div id="today-attendance-check"></div>
+                            <div class="table-list">
+                                <div class="table-item">
+                                    <p>12월 03일</p>
+                                    <p>09:35:51</p>
+                                    <div class="attendance-type">
+                                        <img src="img/late.svg">
+                                        <p style="color:#FFD039">지각</p>
+                                    </div>
+                                    <p class="appeal">이의신청</p>
+                                </div>
+                                <div class="table-item">
+                                    <p>12월 02일</p>
+                                    <p>09:04:51</p>
+                                    <div class="attendance-type">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                            <circle cx="12.5234" cy="12" r="10" stroke="#06DC83" stroke-width="2"/>
+                                            <path d="M8.55371 11.3839L11.4313 14.8855L16.4648 8.76025" stroke="#06DC83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        <p>출석</p>
+                                    </div>
+                                    <p>-</p>
+                                </div>
+                                <div class="table-item">
+                                    <p>12월 01일</p>
+                                    <p>09:04:51</p>
+                                    <div class="attendance-type">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+                                            <circle cx="12.5234" cy="12" r="10" stroke="#06DC83" stroke-width="2"/>
+                                            <path d="M8.55371 11.3839L11.4313 14.8855L16.4648 8.76025" stroke="#06DC83" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
+                                        <p>출석</p>
+                                    </div>
+                                    <p>-</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-container"></div>
+
+            <!-- 안에내용 끝 -->
+        </div>
+        <div class="orange">
+            <div class="appeal-container">
+                <div class="appeal-header">
+                    <span id="back">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18L9 12L15 6" stroke="#232C39" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                    <p>이의신청</p>
+                    <span>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <path d="M15 18L9 12L15 6" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </span>
+                </div>
+        
+                <div class="option">
+                    <div class="date">
+                        <p class="label">날짜 선택</p>
+                        <div class="date-con">
+                            <p class="date-label">날짜를 선택해주세요.</p>
+                            <span>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <path d="M21 10H3M16 2V6M8 2V6M7.8 22H16.2C17.8802 22 18.7202 22 19.362 21.673C19.9265 21.3854 20.3854 20.9265 20.673 20.362C21 19.7202 21 18.8802 21 17.2V8.8C21 7.11984 21 6.27976 20.673 5.63803C20.3854 5.07354 19.9265 4.6146 19.362 4.32698C18.7202 4 17.8802 4 16.2 4H7.8C6.11984 4 5.27976 4 4.63803 4.32698C4.07354 4.6146 3.6146 5.07354 3.32698 5.63803C3 6.27976 3 7.11984 3 8.8V17.2C3 18.8802 3 19.7202 3.32698 20.362C3.6146 20.9265 4.07354 21.3854 4.63803 21.673C5.27976 22 6.11984 22 7.8 22Z" stroke="#929292" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                        </div>
+        
+                        <!-- 달력 -->
+                        <div class="calendar">
+                            <div class="month">12월</div>
+                            <ul class="calendar-week">
+                                <li>일</li>
+                                <li>월</li>
+                                <li>화</li>
+                                <li>수</li>
+                                <li>목</li>
+                                <li>금</li>
+                                <li>토</li>
+                            </ul>
+                            <ul class="calendar-date">
+                                <li>
+                                    <p>1</p>
+                                    <p>2</p>
+                                    <p>3</p>
+                                    <p>4</p>
+                                    <p>5</p>
+                                    <p>6</p>
+                                    <p>7</p>
+                                </li>
+                                <li>
+                                    <p>8</p>
+                                    <p>9</p>
+                                    <p>10</p>
+                                    <p>11</p>
+                                    <p>12</p>
+                                    <p>13</p>
+                                    <p>14</p>
+                                </li>
+                                <li>
+                                    <p>15</p>
+                                    <p>16</p>
+                                    <p>17</p>
+                                    <p>18</p>
+                                    <p>19</p>
+                                    <p>20</p>
+                                    <p>21</p>
+                                </li>
+                                <li>
+                                    <p>22</p>
+                                    <p>23</p>
+                                    <p>24</p>
+                                    <p>25</p>
+                                    <p>26</p>
+                                    <p>27</p>
+                                    <p>28</p>
+                                </li>
+                                <li>
+                                    <p>29</p>
+                                    <p>30</p>
+                                    <p>31</p>
+                                    <p></p>
+                                    <p></p>
+                                    <p></p>
+                                    <p></p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="img">
+                        <p class="label">복장 사진</p>
+                        <div class="img-con"><img src="" alt=""></div>
+                    </div>
+                    <div class="contents">
+                        <p class="label">이의 사항</p>
+                        <input type="text" placeholder="이의 사항 내용을 입력해주세요.">
+                    </div>
+                </div>
+        
+                <button id="submit">신청하기</button>
+        
+            </div>          
+
+        </div>
+        <div class="green">
+            <div class="header-container"></div>
+            <div class="attendance">
+                <!-- 안에 내용 -->
+                <div class="attendance-con2">
+                    <div class="conA">
+                        <h1>상벌점 내역</h1>
+                        <div class="contents-box2">
+                            <div class="att">
+                                <div class="count" style="color: #435FD0">+8점</div>
+                                <p class="type">총 상점</p>
+                            </div>
+
+                            <div class="absence">
+                                <div class="count" style="color: #FF5D54">-4점</div>
+                                <p class="type">총 벌점</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="conC">
+                        <p>이의신청 하기</p>
+                    </div>
+
+                    <div class="conB">
+                        
+                        <div class="table2">
+                            <div class="table-list2">
+                                <div class="table-item2">
+                                    <div class="attendance-type2">
+                                        <p class="point-good">모범</p>
+                                        <p class="point-date">2024.12.17</p>
+                                    </div>
+                                    <p class="appeal2" style="color:#435FD0">+1</p>
+                                </div>
+
+                                <div class="table-item2">
+                                    <div class="attendance-type2">
+                                        <p class="point-good">복장불량</p>
+                                        <p class="point-date">2024.12.17</p>
+                                    </div>
+                                    <p class="appeal2" style="color:#FF5D54">-1</p>
+                                </div>
+
+                                <div class="table-item2">
+                                    <div class="attendance-type2">
+                                        <p class="point-good">복장불량</p>
+                                        <p class="point-date">2024.12.17</p>
+                                    </div>
+                                    <p class="appeal2" style="color:#FF5D54">-1</p>
+                                </div>
+
+                                <div class="table-item2">
+                                    <div class="attendance-type2">
+                                        <p class="point-good">복장불량</p>
+                                        <p class="point-date">2024.12.17</p>
+                                    </div>
+                                    <p class="appeal2" style="color:#FF5D54">-1</p>
+                                </div>
+
+                                <div class="table-item2">
+                                    <div class="attendance-type2">
+                                        <p class="point-good">복장불량</p>
+                                        <p class="point-date">2024.12.17</p>
+                                    </div>
+                                    <p class="appeal2" style="color:#FF5D54">-1</p>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-container"></div>
+        </div>
+    </div>
+
+</div>
+
+<!-- 키오스크jquery -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#goblue").click(function () {
+            $(".red, .blue, .green").css("z-index", 1); // Reset z-index for all
+            $(".blue").css("z-index", 2); // Set z-index of blue
+        });
+        $("#gogreen").click(function () {
+            $(".red, .blue, .green").css("z-index", 1);
+            $(".green").css("z-index", 2);
+        });
+        $("#gored").click(function () {
+            $(".red, .blue, .green").css("z-index", 1);
+            $(".red").css("z-index", 2);
+        });
+    });
+
+      // More API functions here:
+      // https://github.com/googlecreativelab/teachablemachine-community/tree/master/libraries/image
+
+      // the link to your model provided by Teachable Machine export panel
+    const URL = "./schooluniform_model/";
+
+    let model, webcam, labelContainer, maxPredictions;
+
+    const video = document.getElementById("video");
+    const resultDiv = document.getElementById("result");
+
+      // Load the image model and setup the webcam
+    async function init() {
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        // load the model and metadata
+        // Refer to tmImage.loadFromFiles() in the API to support files from a file picker
+        // or files from your local hard drive
+        // Note: the pose library adds "tmImage" object to your window (window.tmImage)
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        // Convenience function to setup a webcam
+        webcam = new tmImage.Webcam((width = 200), (height = 200), true); // width, height, flip
+        await webcam.setup(); // request access to the webcam
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        labelContainer = document.getElementById("label-container");
+
+        for (let i = 0; i < maxPredictions; i++) {
+          // and class labels
+            labelContainer.appendChild(document.createElement("div"));
+        }
+        // $('#label-container div').css("display","none");
+        $('#label-container div').css("text-align","center");
+
+        
+        // 비율을 변경한 새로운 캔버스 생성
+        const croppedCanvas = document.createElement("canvas");
+        croppedCanvas.id = "cropped-canvas"; // Assign an ID
+        croppedCanvas.style.margin = "0 auto"; // 가운데 정렬 추가
+        croppedCanvas.style.display = "block"; // 블록 요소로 설정
+        croppedCanvas.style.borderRadius = "10px"; 
+        croppedCanvas.width = 354; // Target width for 9:16 aspect ratio
+        croppedCanvas.height = 500; // Target height for 9:16 aspect ratio
+        document.getElementById("webcam-container").appendChild(croppedCanvas);
+
+        const overlayImage = document.getElementById("overlayImage");
+        overlayImage.src = "img/guide.png"; // 이미지 경로를 여기에 추가
+        overlayImage.alt = "Overlay Image";
+
+        // 이미지 스타일 설정
+        overlayImage.style.position = "absolute";
+        overlayImage.style.top = "50%";
+        overlayImage.style.left = "50%";
+        overlayImage.style.transform = "translate(-50%, -50%)"; // 정중앙으로 위치
+        overlayImage.style.zIndex = "10"; // 캔버스 위로 배치
+
+        const ctx = croppedCanvas.getContext("2d");
+        function draw() {
+            // Calculate the cropping coordinates
+            const originalWidth = webcam.canvas.width;
+            const originalHeight = webcam.canvas.height;
+
+            const targetWidth = (originalHeight * 9) / 16; // Width to maintain 9:16 aspect ratio
+            const offsetX = (originalWidth - targetWidth) / 2; // Center the crop horizontally
+
+            // Crop and draw the webcam image onto the new canvas
+            ctx.drawImage(
+                webcam.canvas,
+                offsetX,
+                0,
+                targetWidth,
+                originalHeight,
+                0,
+                0,
+                croppedCanvas.width,
+                croppedCanvas.height
+            );
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+
+    }
+    // $('#result').css("display","none");
+
+    async function loop() {
+        webcam.update(); // update the webcam frame
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+    // run the webcam image through the image model
+    let activeClass = null; // 현재 활성화된 클래스 이름
+    let activeStartTime = null; // 조건이 시작된 시간
+
+    let isCaptured = false; // 캡처가 완료되었는지 여부를 추적
+    let attendance_check_bool = false; //attend 추적
+
+    function capture(){
+        if (isCaptured) return;
+
+        const img = new Image();
+        const croppedCanvas = document.getElementById("cropped-canvas");
+        img.src = croppedCanvas.toDataURL("image/png");
+        img.alt = "Cropped Captured Image";
+        resultDiv.appendChild(img);
+
+        // 캡처 후 상태를 true로 설정
+        isCaptured = true;
+    }
+    function parseTimeStringToDate(timeString) {
+            const [hours, minutes, seconds] = timeString.split(":").map(Number);
+            const date = new Date();
+            date.setHours(hours, minutes, seconds, 0); // 시, 분, 초, 밀리초 설정
+            return date;
+        }
+    
+    function attendance_check(){
+        const todayData_date = nowday_noyear; // 날짜
+        let todayData_time = nowtime; //시간
+        let todayData_status = null; // 출석 상태 (출석, 지각, 결석)
+        let todayData_appeal = null; // 이의신청 여부
+        let statusColor = null; //출석색상(출석:#06DC83, 지각:#FFD039, 결석:#FF5D54)
+        let statusIcon = null; //출석아이콘(출석, 지각, 결석)
+        let appeal = null; //이의신청이 뜨는 경우(지각,결석)에만 "appeal"
+        
+        //시연: 출석
+        let cutoffTimeAttendance = "14:00:00"; // 출석 기준 시간 (string)
+        let cutoffTimeLate = "14:10:00"; // 지각 기준 시간 (string)
+
+        // 시연 :지각
+        // let cutoffTimeAttendance = "10:00:00"; // 출석 기준 시간 (string)
+        // let cutoffTimeLate = "13:00:00"; // 지각 기준 시간 (string)
+
+        //시연: 결석
+        // let cutoffTimeAttendance = "09:00:00"; // 출석 기준 시간 (string)
+        // let cutoffTimeLate = "09:10:00"; // 지각 기준 시간 (string)
+
+
+        let todayData_timeDate = parseTimeStringToDate(todayData_time);
+        let cutoffTimeAttendanceDate = parseTimeStringToDate(cutoffTimeAttendance);
+        let cutoffTimeLateDate = parseTimeStringToDate(cutoffTimeLate);
+
+        if (todayData_timeDate <= cutoffTimeAttendanceDate) {
+            todayData_status = "출석";
+        } else if (todayData_timeDate <= cutoffTimeLateDate) {
+            todayData_status = "지각";
+        } else {
+            todayData_status = "결석";
+        }
+    
+        if(todayData_status === "출석"){
+            statusIcon = "img/attendance.svg"
+            todayData_appeal = "-"
+            statusColor = "#06DC83"
+            appeal = null
+        }
+        else if(todayData_status === "지각"){
+            statusIcon = "img/late.svg"
+            todayData_appeal = "이의신청"
+            statusColor = "#FFD039"
+            appeal = "appeal"
+        }
+        else if(todayData_status === "결석"){
+            statusIcon = "img/absence.svg"
+            todayData_appeal = "이의신청"
+            statusColor = "#FF5D54"
+            appeal = "appeal"
+        }
+        // 추가할 데이터(출석)
+        const todayData = `
+            <div class="table-item">
+                <p>${todayData_date}</p>
+                <p>${todayData_time}</p>
+                <div class="attendance-type">
+                    <img src="${statusIcon}">
+                    <p style="color: ${statusColor};">${todayData_status}</p>
+                </div>
+                <p class="${appeal}">${todayData_appeal}</p>
+            </div>`;
+
+    // #today-attendance-check에 추가
+    $("#today-attendance-check").addClass("table-list")
+    $("#today-attendance-check").html(todayData);
+    attendance_check_bool = true;
+    }
+
+    function schooluniform_character(){
+        $('#head1').css("display","flex")
+        $('#body1').css("display","flex")
+        $('#hand1').css("display","flex")
+        $('#head2').css("display","none")
+        $('#body2').css("display","none")
+        $('#hand2').css("display","none")
+        $('#effect2').css("display","none")
+    }
+    function casual_wear_character(){
+        $('#head1').css("display","none")
+        $('#body1').css("display","none")
+        $('#hand1').css("display","none")
+        $('#head2').css("display","flex")
+        $('#body2').css("display","flex")
+        $('#hand2').css("display","flex")
+        $('#effect2').css("display","flex")
+    }
+
+    async function predict() {
+        const prediction = await model.predict(webcam.canvas);
+
+        for (let i = 0; i < maxPredictions; i++) {
+            const classPrediction = prediction[i].className + ": " + prediction[i].probability.toFixed(2); 
+            labelContainer.childNodes[i].innerHTML = classPrediction;
+
+          // 조건 확인: probability > 0.5 && className != '기본'
+            if (prediction[i].probability > 0.5) {
+                if(prediction[i].className == "기본"){
+                    $('#overlayImage').css("opacity","1")
+                }
+                else{
+                    $('#overlayImage').css("opacity","0.2")
+                }
+
+            // 조건에 해당하는 클래스가 이미 활성화되어 있는지 확인
+            if (activeClass === prediction[i].className) {
+                // 활성화된 상태에서 3초가 지났는지 확인
+                const now = Date.now();
+                if (now - activeStartTime >= 3000) {
+                    console.log(`${prediction[i].className}가 3초 이상 지속됨`);
+                    let status = prediction[i].className;
+                    $("#predict").css("text-align","center");
+                    $("#predict").text("Status : " + status);
+
+                    if (!isCaptured && prediction[i].className != "기본") {
+                        capture()
+                    }
+                if(status=='기본'){
+                    $('#overImage').attr("src","img/guide.png")
+                    $('#maintext').text("가이드라인에 맞춰 서주세요.")
+                    $('#maintext').css('color','#435FD0')
+                    $('#subtext').text("화면 속 가이드라인에 맞춰 서주세요!")
+                    schooluniform_character()
+                }
+                else if (status == '동계' || status == '하복' ||status == '춘추') {  
+                    $('#maintext').text("교복이에요!")
+                    $('#maintext').css('color', '#07DC84')
+                    $('#subtext').html("교복 착용이 확인되었습니다.<br>즐거운 하루되세요!")
+                    schooluniform_character()
+                    //출석 관련 코드 추가
+                    if(!attendance_check_bool){
+                        attendance_check()
+                    }
+                }
+                else if(status=='사복'){
+                    $('#maintext').text("교복이 아니에요!")
+                    $('#maintext').css('color','#E85B48')
+                    $('#subtext').html("단정한 교복으로 등교해주세요.<br>교복 미착용 시 벌점이 부과됩니다!")
+                    casual_wear_character()
+                  //출석 관련 코드 추가
+                    if(!attendance_check_bool){
+                        attendance_check()
+                    }
+                }
+                //체육복 관련 추가하기
+              }
+            } else {
+              // 새로운 클래스가 조건에 맞으면 상태 초기화
+              activeClass = prediction[i].className;
+              activeStartTime = Date.now(); // 현재 시간 기록
+              isCaptured = false;
+            }
+          } else {
+            // 조건이 만족되지 않으면 상태 초기화
+            if (activeClass === prediction[i].className) {
+              activeClass = null;
+              activeStartTime = null;
+            }
+          }
+        }
+      }
+    </script>
+
+<!-- 앱jquery -->
+<script>
+    $(document).ready(function() {
+        $('.date-con span').click(function(){
+        $('.calendar').toggle();
+    })
+});
+
+function goHome() {
+    $(".red, .blue, .green, .orange").css("z-index", 1);
+    $(".red").css("z-index", 2);
+    $('.home img').attr("src", "img/homeClicked.svg");
+    $('.ochul img').attr("src", "img/ochul.svg");
+    $('.point img').attr("src", "img/point.svg");
+
+    $(".home p").css("color", "#CBCBCB");
+    $(".ochul p").css("color", "#CBCBCB");
+    $(".point p").css("color", "#CBCBCB");
+    $('.home p').css("color", "#435FD0");
+    $('#submit').css("display", "none");
+}
+
+function goOchul(){
+    $(".red, .blue, .green, .orange").css("z-index", 1);
+    $(".blue").css("z-index", 2);
+    $('.home img').attr("src", "img/home.svg");
+    $('.ochul img').attr("src", "img/ochulClicked.svg");
+    $('.point img').attr("src", "img/point.svg");
+
+    $(".home p").css("color", "#CBCBCB");
+    $(".ochul p").css("color", "#CBCBCB");
+    $(".point p").css("color", "#CBCBCB");
+
+    $('.ochul p').css("color","#435FD0");
+    $('#submit').css("display", "none");
+}
+
+function goPoint(){
+    $(".red, .blue, .green, .orange").css("z-index", 1);
+    $(".green").css("z-index", 2);
+    $('.home img').attr("src", "img/home.svg");
+    $('.ochul img').attr("src", "img/ochul.svg");
+    $('.point img').attr("src", "img/pointClicked.svg");
+    $(".home p").css("color", "#CBCBCB");
+    $(".ochul p").css("color", "#CBCBCB");
+    $(".point p").css("color", "#CBCBCB");
+    $('.point p').css("color","#435FD0");
+    $('#submit').css("display", "none");
+}
+
+function goAppeal(){
+    $(".red, .blue, .green, .orange").css("z-index", 1);
+    $(".orange").css("z-index", 2);
+    $('.home img').attr("src", "img/homeClicked.svg");
+    $('.ochul img').attr("src", "img/ochul.svg");
+    $('.point img').attr("src", "img/point.svg");
+    $(".home p").css("color", "#CBCBCB");
+    $(".ochul p").css("color", "#CBCBCB");
+    $(".point p").css("color", "#CBCBCB");
+    $('.home p').css("color","#435FD0");
+    $('#submit').css("display", "flex");
+}
+
+$(document).ready(function () {
+    $(".header-container").each(function () {
+        const container = $(this);
+        fetch('header.html')
+            .then(response => response.text())
+            .then(data => {
+                container.html(data);
+            });
+    });
+
+    fetch('bottom.html')
+    .then(response => response.text())
+    .then(data => {
+        $(".bottom-container").html(data);
+
+    });
+
+    $(document).on("click", ".home", function() {
+        goHome();
+    });
+
+    $(document).on("click", ".ochul", function () {
+        goOchul();
+    });
+
+    $(document).on("click", ".point", function () {
+        goPoint();
+    });
+
+    $(document).on("click", ".conC", function () {
+        goAppeal()
+    });
+    $(document).on("click", ".appeal", function () {
+        goAppeal()
+    });
+    $("#back").click(function () {
+        goPoint();
+    });
+});
+</script>
+</body>
+</html>
